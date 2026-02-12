@@ -10,10 +10,9 @@ std::atomic<bool> is_finished(false);
 void timerDisplay(int minutes) {
     int totalSeconds = minutes * 60;
     for (int i = totalSeconds; i >= 0; ) { 
+        int m = i / 60;
+        int s = i % 60;
         if (is_running){
-            int m = i / 60;
-            int s = i % 60;
-
             std::cout << "\rRemaining Time: "
             << std::setfill('0') << std::setw(2) << m << ":" 
             << std::setfill('0') << std::setw(2) << s 
@@ -22,7 +21,10 @@ void timerDisplay(int minutes) {
             i--;
         } else {
             //一時停止中の表示
-            std::cout << "\rRemaining Time: --:-- [PAUSED]  (Press Enter to Resume)"                  << std::flush;
+            std::cout << "\rRemaining Time: "
+            << std::setfill('0') << std::setw(2) << m << ":"
+            << std::setfill('0') << std::setw(2) << s
+            << "[PAUSED] (Press Enter to Resume) " << std::flush;
             std::this_thread::sleep_for(std::chrono::milliseconds(100));
         }
     }
